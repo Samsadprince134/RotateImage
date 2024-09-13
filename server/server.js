@@ -11,12 +11,16 @@ const app = express();
 const cors = require("cors");
 
 // Enable CORS for all origins or specify the frontend origin
-app.use(
-  cors({
-    origin: "*", // Replace with your frontend URL
-  })
-);
-
+// app.use(
+//   cors({
+//     origin: "*", // Replace with your frontend URL
+//   })
+// );
+app.use(cors({
+  origin: 'https://rotate-image-py63.vercel.app',  // Allow only your Vercel frontend
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization'
+}));
 const upload = multer({ dest: "uploads/" });
 
 app.use(express.static(path.join(__dirname, "public")));
