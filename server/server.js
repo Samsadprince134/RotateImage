@@ -40,7 +40,7 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
 
     let processedImage;
 
-    if (isVerticalRectangle) {
+    if (1) {
       // Rotate the image by 90 degrees if it's a vertical rectangle
       console.log("Rotating image");
       processedImage = await image.rotate(90).toBuffer();
