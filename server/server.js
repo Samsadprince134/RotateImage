@@ -1,43 +1,34 @@
 const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
-const path = require("path");
-const fs = require("fs");
-const { promisify } = require("util");
-const unlinkAsync = promisify(fs.unlink);
-const {Jimp} = require("jimp");
-
-const app = express();
+const { Jimp } = require("jimp");
 const cors = require("cors");
 
-// Enable CORS for all origins or specify the frontend origin
-// app.use(
-//   cors({
-//     origin: "*", // Replace with your frontend URL
-//   })
-// );
-app.use(cors({
-  origin: 'https://rotate-image-py63.vercel.app',  // Allow only your Vercel frontend
-  methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type,Authorization'
-}));
-const upload = multer({ dest: "uploads/" });
+const app = express();
 
-app.use(express.static(path.join(__dirname, "public")));
+// Enable CORS for all origins or specify the frontend origin
+app.use(cors({
+  origin: 'https://rotate-image-py63.vercel.app', // Your Vercel frontend
+  methods: 'GET, POST, PUT, DELETE',
+  allowedHeaders: 'Content-Type, Authorization'
+}));
+
+// Use multer's memory storage to store images in memory as buffers
+const upload = multer({ storage: multer.memoryStorage() });
 
 app.post("/api/upload", upload.single("image"), async (req, res) => {
-  const filePath = req.file ? req.file.path : null;
+  const fileBuffer = req.file ? req.file.buffer : null;
 
   try {
-    if (!filePath) {
+    if (!fileBuffer) {
       return res.status(400).json({ message: "No file uploaded." });
     }
 
-    // Initialize Jimp and Sharp with the image file
-    const image2 = await Jimp.read(filePath);
-    const image = sharp(filePath);
+    // Initialize Jimp with the image buffer
+    const image2 = await Jimp.read(fileBuffer);
+    const image = sharp(fileBuffer);
 
-    const { width, height } = image2;
+    const { width, height } = image2.bitmap; // Get dimensions from Jimp
     console.log("Image dimensions:", width, height);
 
     // Get metadata of the image (to check dimensions)
@@ -59,35 +50,15 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
       processedImage = await image.toBuffer();
     }
 
-    // Send the processed image
+    // Send the processed image back to the client
     res.set("Content-Type", "image/jpeg");
     res.send(processedImage);
 
   } catch (error) {
     console.error("Error processing image:", error.message);
     res.status(500).json({ message: "Error processing the image." });
-  } finally {
-    // Clean up the original file after processing
-    if (filePath) {
-      setTimeout(async () => {
-        try {
-          await unlinkAsync(filePath);
-        } catch (err) {
-          console.error("Error removing file:", err);
-        }
-      }, 1000); // Increased delay to ensure all operations are complete
-    }
   }
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-app.get("/", (request, response) => {
-  return response.json({
-    success : true,
-    message : "Your Server is Up and Running Successfully !!........."
-  })
-  
-})
