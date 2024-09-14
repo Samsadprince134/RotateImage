@@ -57,7 +57,7 @@
     <ol>
         <li><strong>Clone the Repository:</strong>
             <pre><code>git clone https://github.com/Samsadprince134/RotateImage
-cd image-rotation-app/backend</code></pre>
+cd image-rotation-app/server</code></pre>
         </li>
         <li><strong>Install Backend Dependencies:</strong>
             <pre><code>npm install express multer sharp cors jimp</code></pre>
@@ -66,7 +66,7 @@ cd image-rotation-app/backend</code></pre>
                 <li><strong>multer</strong>: Middleware for handling file uploads.</li>
                 <li><strong>sharp</strong>: High-performance image processing library.</li>
                 <li><strong>cors</strong>: Middleware to enable Cross-Origin Resource Sharing.</li>
-                <li><strong>jimp</strong>: Image manipulation library (optional, if using).</li>
+                <li><strong>jimp</strong>: Image manipulation library .</li>
             </ul>
         </li>
         <li><strong>Start the Backend Server:</strong>
@@ -78,7 +78,7 @@ cd image-rotation-app/backend</code></pre>
   <h3>Frontend Setup</h3>
     <ol>
         <li><strong>Navigate to the Frontend Directory:</strong>
-            <pre><code>cd ../frontend</code></pre>
+            <pre><code>cd ../client</code></pre>
         </li>
         <li><strong>Install Frontend Dependencies:</strong>
             <pre><code>npm install</code></pre>
