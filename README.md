@@ -48,7 +48,7 @@
         <li><strong>Multer</strong> (to handle file uploads)</li>
         <li><strong>Sharp</strong> (for image processing: rotating the image)</li>
         <li><strong>CORS</strong> (to handle Cross-Origin Resource Sharing)</li>
-        <li><strong>Jimp</strong> (for image processing, if needed)</li>
+        <li><strong>Jimp</strong> (for image processing)</li>
     </ul>
 
   <h2 id="installation-and-setup">Installation and Setup</h2>
